@@ -156,5 +156,10 @@ public final class Constants {
         public static final int rpmIndexSupply = 50;
 
         public static final double triggerDeadband = 0.13;
+
+        public static final int IntakeShooterSpeed = -50;
+        public static final int IntakeIndexSpeed = -75;
+
+        public static final int StorageIndexSpeed = 15;
     }
 }

@@ -15,12 +15,17 @@ public class RevShooter extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         shooter.setShooterRPM(ShootingConstants.rpmShootSupply);
     }
 
     @Override
+    public void execute() {
+        // Benny Blanco
+    }
+
+    @Override
     public void end(boolean interrupted) {
-        shooter.setShooterRPM(0);
+        // shooter.setShooterRPM(0);
     }
 }

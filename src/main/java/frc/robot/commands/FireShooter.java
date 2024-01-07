@@ -10,12 +10,13 @@ public class FireShooter extends SequentialCommandGroup{
 
     public FireShooter(Shooter shooter) {
         addCommands(
-            new RevShooter(shooter),
-            new WaitCommand(2),
-            new IndexShooter(shooter)
-            // new WaitCommand(1), Uncomment if it doesnt stop shooting
-            // new InstantCommand(() -> shooter.setShooterRPM(0)),
-            // new InstantCommand(() -> shooter.setIndexRPM(0))
+            // new RevShooter(shooter),
+            // new WaitCommand(2),
+            // new IndexShooter(shooter)
+           new RevShooter(shooter)
+           .withTimeout(1)
+           .andThen(new IndexShooter(shooter))
+           .handleInterrupt(() -> shooter.stop())
         );
     }   
 }

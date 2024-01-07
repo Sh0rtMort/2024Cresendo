@@ -46,6 +46,8 @@ public class RobotContainer {
   private final JoystickButton zeroGyro = new JoystickButton(driver, 7); //options button(two squares)
   private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kStart.value);
   private final JoystickButton fireShooter = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+  private final JoystickButton topIntake = new JoystickButton(driver, XboxController.Button.kY.value);
+  private final JoystickButton floorIntake = new JoystickButton(driver, XboxController.Button.kA.value);
 
   private final JoystickButton elevatorHigh = new JoystickButton(operator, XboxController.Button.kY.value);
   private final JoystickButton elevatorStore = new JoystickButton(operator, XboxController.Button.kA.value);
@@ -86,7 +88,9 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroGyro()));
     zeroEncoders.onTrue(new InstantCommand(() -> elevatorSubsystem.resetEncoders()));
 
+    topIntake.onTrue(shooter.getTopIntakeCommand());
     fireShooter.onTrue(new FireShooter(shooter));
+    floorIntake.onTrue(shooter.getBottomIntakeCommand());
 
     elevatorHigh.onTrue(new ElevatorCommand(elevatorSubsystem, 200));
     elevatorStore.onTrue(new ElevatorCommand(elevatorSubsystem, 5));

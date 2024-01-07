@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.MotorCommutation;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,33 +16,34 @@ import frc.robot.DeviceConstants;
 
 public class ElevatorSubsystem extends SubsystemBase{
 
-    private CANSparkMax elevator1 = new CANSparkMax(DeviceConstants.elevator1, MotorType.kBrushless);
-    private CANSparkMax elevator2 = new CANSparkMax(DeviceConstants.elevator2, MotorType.kBrushless);
+    // private CANSparkMax elevator1 = new CANSparkMax(DeviceConstants.elevator1, MotorType.kBrushless);
+    // private CANSparkMax elevator2 = new CANSparkMax(DeviceConstants.elevator2, MotorType.kBrushless);
+
+    private TalonFX elevator1 = new TalonFX(DeviceConstants.elevator1);
+    private TalonFX elevator2 = new TalonFX(DeviceConstants.elevator2);
 
     public ElevatorSubsystem() {
 
         elevator1.setInverted(true);
         elevator2.setInverted(false);
 
-        elevator1.setIdleMode(IdleMode.kBrake);
-        elevator2.setIdleMode(IdleMode.kBrake);
+        elevator1.setNeutralMode(NeutralMode.Brake);
+        elevator2.setNeutralMode(NeutralMode.Brake);
 
-        elevator1.setClosedLoopRampRate(0);
-        elevator1.setOpenLoopRampRate(0);
-        elevator2.setClosedLoopRampRate(0);
-        elevator2.setOpenLoopRampRate(0);
+        elevator1.configClosedloopRamp(0);
+        elevator1.configOpenloopRamp(0);
+        elevator2.configClosedloopRamp(0);
+        elevator2.configOpenloopRamp(0);
 
-        elevator1.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60);
-        elevator2.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60);
     }
     
     public void setElevatorSpeed(double speed) {
-        elevator1.set(speed);
-        elevator2.set(speed);
+        elevator1.set(ControlMode.PercentOutput, speed);
+        elevator2.set(ControlMode.PercentOutput, speed);
     }
 
     public void resetEncoders() {
-        elevator1.getEncoder().setPosition(0);
-        elevator2.getEncoder().setPosition(0);
+        elevator1.setSelectedSensorPosition(0);
+        elevator2.setSelectedSensorPosition(0);
     }
 }
