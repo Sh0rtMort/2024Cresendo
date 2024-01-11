@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ElevatorManual;
@@ -12,6 +13,7 @@ import frc.robot.commands.FireShooter;
 import frc.robot.commands.RevShooter;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,8 +33,8 @@ public class RobotContainer {
   private final Swerve swerve = new Swerve();
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-
   private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
 
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);
@@ -46,8 +48,10 @@ public class RobotContainer {
   private final JoystickButton zeroGyro = new JoystickButton(driver, 7); //options button(two squares)
   private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kStart.value);
   private final JoystickButton fireShooter = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-  private final JoystickButton topIntake = new JoystickButton(driver, XboxController.Button.kY.value);
+  private final JoystickButton topIntake = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
   private final JoystickButton floorIntake = new JoystickButton(driver, XboxController.Button.kA.value);
+  private final JoystickButton ampIntake = new JoystickButton(driver, XboxController.Button.kB.value);
+  private final JoystickButton sourceIntake = new JoystickButton(driver, XboxController.Button.kY.value);
 
   private final JoystickButton elevatorHigh = new JoystickButton(operator, XboxController.Button.kY.value);
   private final JoystickButton elevatorStore = new JoystickButton(operator, XboxController.Button.kA.value);
@@ -86,14 +90,19 @@ public class RobotContainer {
  
   private void configureBindings() {
     zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroGyro()));
+
     zeroEncoders.onTrue(new InstantCommand(() -> elevatorSubsystem.resetEncoders()));
+
+    floorIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleGround)));
+    ampIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleAmp)));
+    sourceIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleSource)));
 
     topIntake.onTrue(shooter.getTopIntakeCommand());
     fireShooter.onTrue(new FireShooter(shooter));
-    floorIntake.onTrue(shooter.getBottomIntakeCommand());
+    // floorIntake.onTrue(shooter.getBottomIntakeCommand());
 
-    elevatorHigh.onTrue(new ElevatorCommand(elevatorSubsystem, 200));
-    elevatorStore.onTrue(new ElevatorCommand(elevatorSubsystem, 5));
+    // elevatorHigh.onTrue(new ElevatorCommand(elevatorSubsystem, 200));
+    // elevatorStore.onTrue(new ElevatorCommand(elevatorSubsystem, 5));
   }
 
   /**

@@ -20,22 +20,22 @@ import frc.robot.Constants.ShootingConstants;
 
 public class Shooter extends SubsystemBase{
 
-    private TalonFX shootWheel = new TalonFX(DeviceConstants.shootWheel);
-    private TalonFX indexWheel = new TalonFX(DeviceConstants.indexWheel);
+    private TalonFX shootWheel1 = new TalonFX(DeviceConstants.shootWheel);
+    private TalonFX shootWheel2 = new TalonFX(DeviceConstants.indexWheel);
 
     private TalonFX storageIndexMotor = new TalonFX(5);
     
     public Shooter() {
-        shootWheel.setInverted(false);
-        indexWheel.setInverted(false);
+        shootWheel1.setInverted(false);
+        shootWheel2.setInverted(false);
 
-        shootWheel.configOpenloopRamp(0);
-        shootWheel.configClosedloopRamp(0);
-        indexWheel.configOpenloopRamp(0);
-        indexWheel.configClosedloopRamp(0);
+        shootWheel1.configOpenloopRamp(0);
+        shootWheel1.configClosedloopRamp(0);
+        shootWheel2.configOpenloopRamp(0);
+        shootWheel2.configClosedloopRamp(0);
 
-        shootWheel.setNeutralMode(NeutralMode.Coast);
-        indexWheel.setNeutralMode(NeutralMode.Coast);
+        shootWheel1.setNeutralMode(NeutralMode.Coast);
+        shootWheel2.setNeutralMode(NeutralMode.Coast);
 
         storageIndexMotor.setInverted(false);
 
@@ -46,38 +46,38 @@ public class Shooter extends SubsystemBase{
     }
 
     public void setDualSpeedPercent(double speed) {
-        shootWheel.set(ControlMode.PercentOutput, speed);
-        indexWheel.set(ControlMode.PercentOutput, speed);
+        shootWheel1.set(ControlMode.PercentOutput, speed);
+        shootWheel2.set(ControlMode.PercentOutput, speed);
     }
 
     public void setShooterRPM(double rpm) {
         double motorSpeed = (2048 / 600.0) * rpm;
 
-        shootWheel.set(ControlMode.Velocity, motorSpeed);
+        shootWheel1.set(ControlMode.Velocity, motorSpeed);
 
-        SmartDashboard.putNumber("Shooter RPM", ( (600.0 / 2048) * shootWheel.getSelectedSensorVelocity()));
+        SmartDashboard.putNumber("Shooter RPM", ( (600.0 / 2048) * shootWheel1.getSelectedSensorVelocity()));
     }
     
     public void setIndexRPM(double rpm) {
         double motorSpeed = (2048 / 600.0) * rpm;
 
-        shootWheel.set(ControlMode.Velocity, motorSpeed);
+        shootWheel1.set(ControlMode.Velocity, motorSpeed);
 
-        SmartDashboard.putNumber("Index Wheel RPM", ((600.0 / 2048) * indexWheel.getSelectedSensorVelocity()));
+        SmartDashboard.putNumber("Index Wheel RPM", ((600.0 / 2048) * shootWheel2.getSelectedSensorVelocity()));
     }
 
     public void stop() {
-        shootWheel.set(ControlMode.Velocity, 0);
-        indexWheel.set(ControlMode.Velocity, 0);
+        shootWheel1.set(ControlMode.Velocity, 0);
+        shootWheel2.set(ControlMode.Velocity, 0);
     }
 
-    public void setStorageIndexRPM(double rpm) {
-        double motorSpeed = (2048 / 600) * rpm;
+    // public void setStorageIndexRPM(double rpm) {
+    //     double motorSpeed = (2048 / 600) * rpm;
 
-        storageIndexMotor.set(ControlMode.Velocity, motorSpeed);
+    //     storageIndexMotor.set(ControlMode.Velocity, motorSpeed);
 
-        SmartDashboard.putNumber("Storage Index RPM", ((600 / 2048) * storageIndexMotor.getSelectedSensorVelocity()));
-    }
+    //     SmartDashboard.putNumber("Storage Index RPM", ((600 / 2048) * storageIndexMotor.getSelectedSensorVelocity()));
+    // }
 
     public Command getTopIntakeCommand() {
         // The startEnd helper method takes a method to call when the command is initialized and one to
@@ -89,15 +89,6 @@ public class Shooter extends SubsystemBase{
             },
             () -> {
               stop();
-            });
-      }
-
-    public Command getBottomIntakeCommand() {
-        return this.startEnd(
-            () -> {
-                setStorageIndexRPM(ShootingConstants.StorageIndexSpeed);
-            }, () -> {
-                setStorageIndexRPM(0);
             });
     }
 }

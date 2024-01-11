@@ -159,7 +159,17 @@ public final class Constants {
 
         public static final int IntakeShooterSpeed = -50;
         public static final int IntakeIndexSpeed = -75;
+    }
 
-        public static final int StorageIndexSpeed = 15;
+    public static final class IntakeConstants {
+        public static final int intakeAngleMotorID = 13;
+        public static final int intakePowerMotorID = 14;
+
+        public static final int limitSwitchID = 11;
+
+        public static final int k_pivotAngleGround = 100;
+        public static final int k_pivotAngleSource = 20;
+        public static final int k_pivotAngleAmp = 45;
+        public static final int k_pivotAngleStow = 0;
     }
 }
