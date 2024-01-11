@@ -12,13 +12,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.DeviceConstants;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
-    private TalonFX intakeAngleMotor = new TalonFX(IntakeConstants.intakeAngleMotorID);
-    private TalonFX intakePowerMotor = new TalonFX(IntakeConstants.intakePowerMotorID);
-    private final DigitalInput m_IntakeLimitSwitch = new DigitalInput(IntakeConstants.limitSwitchID);
+    private TalonFX intakeAngleMotor = new TalonFX(DeviceConstants.intakeAngleMotorID);
+    private TalonFX intakePowerMotor = new TalonFX(DeviceConstants.intakePowerMotorID);
+    private final DigitalInput m_IntakeLimitSwitch = new DigitalInput(DeviceConstants.limitSwitchID);
 
     private PIDController pivotPIDController = new PIDController(0.12, 0, 0.001);
 

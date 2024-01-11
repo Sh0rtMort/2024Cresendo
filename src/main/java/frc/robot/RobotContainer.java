@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ElevatorCommand;
@@ -93,16 +94,20 @@ public class RobotContainer {
 
     zeroEncoders.onTrue(new InstantCommand(() -> elevatorSubsystem.resetEncoders()));
 
-    floorIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleGround)));
-    ampIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleAmp)));
-    sourceIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleSource)));
+    // floorIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleGround)));
+    // ampIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleAmp)));
+    // sourceIntake.onTrue(new InstantCommand(() -> intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleSource)));
+
+    floorIntake.onTrue(intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleGround));
+    ampIntake.onTrue(intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleAmp));
+    sourceIntake.onTrue(intake.intakeSetpointCommand(IntakeConstants.k_pivotAngleSource));
 
     topIntake.onTrue(shooter.getTopIntakeCommand());
     fireShooter.onTrue(new FireShooter(shooter));
     // floorIntake.onTrue(shooter.getBottomIntakeCommand());
 
-    // elevatorHigh.onTrue(new ElevatorCommand(elevatorSubsystem, 200));
-    // elevatorStore.onTrue(new ElevatorCommand(elevatorSubsystem, 5));
+    elevatorHigh.onTrue(elevatorSubsystem.elevatorSetpointCommand(ElevatorConstants.highSetpoint));
+    elevatorStore.onTrue(elevatorSubsystem.elevatorSetpointCommand(ElevatorConstants.storeSetpoint));
   }
 
   /**

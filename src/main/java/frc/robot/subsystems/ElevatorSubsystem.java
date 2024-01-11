@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DeviceConstants;
 
@@ -21,6 +23,8 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     private TalonFX elevator1 = new TalonFX(DeviceConstants.elevator1);
     private TalonFX elevator2 = new TalonFX(DeviceConstants.elevator2);
+
+    private PIDController elevatorPID = new PIDController(0, 0, 0);
 
     public ElevatorSubsystem() {
 
@@ -36,6 +40,15 @@ public class ElevatorSubsystem extends SubsystemBase{
         elevator2.configOpenloopRamp(0);
 
     }
+
+    public double getEncoderMeters() {
+        return elevator1.getSelectedSensorPosition();
+    }
+
+    public void resetBothEncoders() {
+        elevator1.setSelectedSensorPosition(0);
+        elevator2.setSelectedSensorPosition(0);
+    }
     
     public void setElevatorSpeed(double speed) {
         elevator1.set(ControlMode.PercentOutput, speed);
@@ -45,5 +58,14 @@ public class ElevatorSubsystem extends SubsystemBase{
     public void resetEncoders() {
         elevator1.setSelectedSensorPosition(0);
         elevator2.setSelectedSensorPosition(0);
+    }
+
+    public Command elevatorSetpointCommand(double setpoint) {
+        elevatorPID.setSetpoint(setpoint);
+        elevatorPID.reset();
+        double speed = elevatorPID.calculate(getEncoderMeters());
+        return run(() -> {
+            setElevatorSpeed(speed);
+        });
     }
 }
