@@ -30,12 +30,15 @@ public class Shooter extends SubsystemBase{
         shootWheel2.setInverted(false);
 
         shootWheel1.configOpenloopRamp(0);
-        shootWheel1.configClosedloopRamp(0);
+        shootWheel1.configClosedloopRamp(1);
         shootWheel2.configOpenloopRamp(0);
-        shootWheel2.configClosedloopRamp(0);
+        shootWheel2.configClosedloopRamp(1);
 
         shootWheel1.setNeutralMode(NeutralMode.Coast);
         shootWheel2.setNeutralMode(NeutralMode.Coast);
+
+        shootWheel1.setInverted(false);
+        shootWheel2.setInverted(false);
 
         storageIndexMotor.setInverted(false);
 
@@ -54,14 +57,24 @@ public class Shooter extends SubsystemBase{
         double motorSpeed = (2048 / 600.0) * rpm;
 
         shootWheel1.set(ControlMode.Velocity, motorSpeed);
+        shootWheel2.set(ControlMode.Velocity, motorSpeed);
 
         SmartDashboard.putNumber("Shooter RPM", ( (600.0 / 2048) * shootWheel1.getSelectedSensorVelocity()));
     }
+
+    public void setRevwheelRPM(double rpm) {
+        // Max RPM: ~6540 RPM
+        // SmartDashboard.putNumber("Target Revwheel RPM", rpm);
+        double revolutionsPerSecond = rpm / 60.0;
+        shootWheel1.set(ControlMode.Velocity, revolutionsPerSecond);
+        shootWheel2.set(ControlMode.Velocity, revolutionsPerSecond);
+      }
+    
     
     public void setIndexRPM(double rpm) {
         double motorSpeed = (2048 / 600.0) * rpm;
 
-        shootWheel1.set(ControlMode.Velocity, motorSpeed);
+        storageIndexMotor.set(ControlMode.Velocity, motorSpeed);
 
         SmartDashboard.putNumber("Index Wheel RPM", ((600.0 / 2048) * shootWheel2.getSelectedSensorVelocity()));
     }
@@ -71,13 +84,9 @@ public class Shooter extends SubsystemBase{
         shootWheel2.set(ControlMode.Velocity, 0);
     }
 
-    // public void setStorageIndexRPM(double rpm) {
-    //     double motorSpeed = (2048 / 600) * rpm;
-
-    //     storageIndexMotor.set(ControlMode.Velocity, motorSpeed);
-
-    //     SmartDashboard.putNumber("Storage Index RPM", ((600 / 2048) * storageIndexMotor.getSelectedSensorVelocity()));
-    // }
+    public double getVelocity() {
+        return shootWheel1.getSelectedSensorPosition();
+    }
 
     public Command getTopIntakeCommand() {
         // The startEnd helper method takes a method to call when the command is initialized and one to

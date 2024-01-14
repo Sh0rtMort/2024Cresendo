@@ -172,4 +172,10 @@ public final class Constants {
         public static final double highSetpoint = 20;
         public static final double storeSetpoint = 20;
     }
+
+    public static final class VisionConstants {
+        public static final double CameraHeightMeters = 0.3; //sample height
+        public static final double TargetHeightMeters = 0.3; //sample height
+        public static final double CameraPitchRadians = 0.3; //sample height
+    }
 }
